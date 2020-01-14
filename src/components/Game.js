@@ -10,6 +10,7 @@ class Game extends React.Component {
     static propTypes = {
         randomNumberCount: PropTypes.number.isRequired,
         initialSeconds: PropTypes.number.isRequired,
+        onPlayAgain: PropTypes.func.isRequired,
     };
 
     state = {
@@ -113,45 +114,71 @@ class Game extends React.Component {
                 />
               ))}
             </View>
-            <Button title="Play Again" onPress={() => {}} />
-            <Text style={styles.target}>{this.state.remainingSeconds}</Text>
+
+            {this.gameStatus !== 'PLAYING' && (
+              <Button
+                color="blue"
+                title="PLAY AGAIN"
+                onPress={this.props.onPlayAgain}
+              />
+            )}
+
+            <Text style={[styles.timer, styles.timerText]}>
+              Time Remaining:
+            </Text>
+            <Text style={styles.timer}>{this.state.remainingSeconds}</Text>
           </View>
         );
     }
 }
 
 const styles = StyleSheet.create({
-    container: {
-        backgroundColor: '#ddd',
-        flex: 1,
-        paddingTop: 50,
-    },
-    
-    target: {
-        fontSize: 50,
-        margin: 50,
-        textAlign: 'center',
-        color: 'white',
-    },
+  container: {
+    backgroundColor: '#ddd',
+    flex: 1,
+    paddingTop: 50,
+    paddingBottom: 100,
+  },
 
-    randomContainer: {
-        flex: 1,
-        flexDirection: 'row',
-        flexWrap: 'wrap',
-        justifyContent: 'space-around',
-    },
+  target: {
+    fontSize: 50,
+    margin: 50,
+    textAlign: 'center',
+    color: 'white',
+  },
 
-    STATUS_PLAYING: {
-        backgroundColor: 'blue',
-    },
-    
-    STATUS_WON: {
-        backgroundColor: 'green',
-    },
-    
-    STATUS_LOST: {
-        backgroundColor: 'red',
-    },
+  playAgain: {
+    paddingBottom: 100,
+  },
+
+  timerText: {
+    paddingTop: 50,
+  },
+
+  timer: {
+    fontSize: 25,
+    textAlign: 'center',
+    color: 'red',
+  },
+
+  randomContainer: {
+    flex: 1,
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    justifyContent: 'space-around',
+  },
+
+  STATUS_PLAYING: {
+    backgroundColor: 'blue',
+  },
+
+  STATUS_WON: {
+    backgroundColor: 'green',
+  },
+
+  STATUS_LOST: {
+    backgroundColor: 'red',
+  },
 });
 
 export default Game;
