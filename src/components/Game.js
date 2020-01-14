@@ -1,7 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import { View, Text, Button, StyleSheet } from 'react-native';
+import { StyleSheet } from 'react-native';
+import { Container, Content, Grid, Col, Row, Button, Text } from 'native-base';
 
 import RandomNumber from './RandomNumber';
 import shuffle from 'lodash.shuffle';
@@ -89,19 +90,16 @@ class Game extends React.Component {
         return 'LOST';
     };
 
-    targetPanelStyle = (gameStatus) => {
-
-    };
 
     render() {
         const gameStatus = this.gameStatus;
         return (
-          <View style={styles.container}>
+          <Container style={styles.container}>
             <Text style={[styles.target, styles[`STATUS_${gameStatus}`]]}>
               {this.target}
             </Text>
 
-            <View style={styles.randomContainer}>
+            <Container style={styles.randomContainer}>
               {this.shuffledRandomNumbers.map((randomNumber, index) => (
                 <RandomNumber
                   key={index}
@@ -113,21 +111,33 @@ class Game extends React.Component {
                   onPress={this.selectNumber}
                 />
               ))}
-            </View>
+            </Container>
 
-            {this.gameStatus !== 'PLAYING' && (
-              <Button
-                color="blue"
-                title="PLAY AGAIN"
-                onPress={this.props.onPlayAgain}
-              />
-            )}
-
-            <Text style={[styles.timer, styles.timerText]}>
-              Time Remaining:
-            </Text>
-            <Text style={styles.timer}>{this.state.remainingSeconds}</Text>
-          </View>
+            <Container>
+              {this.gameStatus === 'PLAYING' ? (
+                <Container>
+                  <Text style={[styles.timer, styles.timerText]}>
+                    Time Remaining
+                  </Text>
+                  <Text style={styles.timer}>
+                    {this.state.remainingSeconds}
+                  </Text>
+                </Container>
+              ) : (
+                <Grid>
+                  <Col>{/* empty column */}</Col>
+                  <Col>
+                    <Content padder>
+                      <Button primary onPress={this.props.onPlayAgain}>
+                        <Text>PLAY AGAIN</Text>
+                      </Button>
+                    </Content>
+                  </Col>
+                  <Col>{/* empty column */}</Col>
+                </Grid>
+              )}
+            </Container>
+          </Container>
         );
     }
 }
@@ -158,7 +168,7 @@ const styles = StyleSheet.create({
   timer: {
     fontSize: 25,
     textAlign: 'center',
-    color: 'red',
+    color: 'blue',
   },
 
   randomContainer: {
@@ -166,6 +176,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     flexWrap: 'wrap',
     justifyContent: 'space-around',
+    color: 'black',
   },
 
   STATUS_PLAYING: {
